@@ -38,7 +38,10 @@ class Scanner {
             parseNullBooleanOrIdentifier();
         else if (current() == '\'' || current() == '"')
             parseString();
-        else if (isCurrentOneOf("()[],?:")) {
+        else if (current() == '.') {
+            accept();
+            token = Token.DOT;
+        } else if (isCurrentOneOf("()[],?:")) {
             accept();
             switch (previous()) {
                 case '(' : token = Token.OPEN_PARENTHESES; break;
@@ -98,7 +101,7 @@ class Scanner {
     }
 
     private void parseNullBooleanOrIdentifier() {
-        acceptWhile(ch -> ch == '_' || ch == '.' || isLetter(ch) || isDigit(ch));
+        acceptWhile(ch -> ch == '_' || isLetter(ch) || isDigit(ch));
         if (lexeme.equals("null"))
             token = Token.NULL;
         else if (lexeme.equals("true") || lexeme.equals("false"))

@@ -57,7 +57,7 @@ class Parser {
             case STRING: return new Tree.StringLiteral(accept(STRING));
             case BOOLEAN: return new Tree.BooleanLiteral(accept(BOOLEAN));
             case IDENTIFIER:
-                String ident = accept(IDENTIFIER);
+                StringBuilder ident = new StringBuilder(accept(IDENTIFIER));
                 if (isCurrent(OPEN_PARENTHESES)) {
                     List<Tree.Function.Param> params = new ArrayList<>();
                     accept(OPEN_PARENTHESES);
@@ -73,9 +73,12 @@ class Parser {
                         }
                     }
                     accept(CLOSE_PARENTHESES);
-                    return new Tree.Function(ident, params);
-                } else
-                    return new Tree.IdentifierLiteral(ident);
+                    return new Tree.Function(ident.toString(), params);
+                } else {
+                    while (isCurrent(DOT))
+                        ident.append(accept(DOT)).append(accept(IDENTIFIER));
+                    return new Tree.IdentifierLiteral(ident.toString());
+                }
             case OPEN_PARENTHESES:
                 accept(OPEN_PARENTHESES);
                 Tree expr = parseLogical();

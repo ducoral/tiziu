@@ -18,8 +18,11 @@ public final class Tiziu {
     }
 
     public static Builder builder() {
+
         return new Builder() {
+
             final Map<String, Object> identifiers = new HashMap<>();
+
             final Map<String, Function> functions = new HashMap<>();
 
             public Builder identifier(String name, Object value) {

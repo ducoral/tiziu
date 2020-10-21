@@ -51,7 +51,7 @@ dotted_identifier_rest ::= empty
        parameters_rest ::= empty
                          | ',' parameters
        
-            identifier ::= /[a-zA-Z_][a-zA-Z0-9_]*/
+            identifier ::= [a-zA-Z_][a-zA-Z0-9_]*
             
                literal ::= null
                          | string

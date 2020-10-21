@@ -10,6 +10,7 @@ enum Token {
     QUESTION_MARK,
     COMMA,
     COLON,
+    DOT,
     OPEN_PARENTHESES,
     CLOSE_PARENTHESES,
     OPEN_BRACKETS,
