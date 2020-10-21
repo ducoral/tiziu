@@ -4,16 +4,21 @@ public class Test {
 
     public static void main(String[] args) {
 
-        String expr = "c == null && b != null";
+        String expr = "(7 > max(x:a.b, y:b)) + (' a:' + a.b + ', b:' + b)";
 
-        Object value = new Tiziu()
-                .setIdentifier("a", 6)
-                .setIdentifier("b", 4)
-                .setFunction("max", (list) -> Math.max(Integer.parseInt(list.get(0).toString()), Integer.parseInt(list.get(1).toString())))
+        Function max = params -> {
+            Integer x = (Integer) params.getOrDefault("x", 0);
+            Integer y = (Integer) params.getOrDefault("y", 0);
+            return Math.max(x, y);
+        };
+
+        Object value = Tiziu.builder()
+                .identifier("a.b", 6)
+                .identifier("b", 4)
+                .function("max", max)
+                .build()
                 .evaluate(expr);
 
-        System.out.println(expr + ": " + value);
-
+        System.out.println(value);
     }
-
 }

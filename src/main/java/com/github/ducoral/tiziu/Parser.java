@@ -59,13 +59,17 @@ class Parser {
             case IDENTIFIER:
                 String ident = accept(IDENTIFIER);
                 if (isCurrent(OPEN_PARENTHESES)) {
-                    List<Tree> params = new ArrayList<>();
+                    List<Tree.Function.Param> params = new ArrayList<>();
                     accept(OPEN_PARENTHESES);
                     if (!isCurrent(CLOSE_PARENTHESES)) {
-                        params.add(parseLogical());
+                        String name = accept(IDENTIFIER);
+                        accept(COLON);
+                        params.add(new Tree.Function.Param(name, parseLogical()));
                         while (isCurrent(COMMA)) {
                             accept(COMMA);
-                            params.add(parseLogical());
+                            name = accept(IDENTIFIER);
+                            accept(COLON);
+                            params.add(new Tree.Function.Param(name, parseLogical()));
                         }
                     }
                     accept(CLOSE_PARENTHESES);

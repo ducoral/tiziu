@@ -3,7 +3,10 @@ package com.github.ducoral.tiziu;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 class Evaluator {
@@ -49,11 +52,10 @@ class Evaluator {
     }
 
     Object evaluate(Tree.Function function) {
-        List<Object> params = function.params
-                .stream()
-                .map(tree -> tree.evaluate(this))
-                .collect(Collectors.toList());
-        return provider.function(function.name).call(params);
+        Map<String, Object> parameters = new HashMap<>();
+        for (Tree.Function.Param param : function.params)
+            parameters.put(param.name, param.value.evaluate(this));
+        return provider.function(function.name).call(parameters);
     }
 
     Object evaluate(Tree.NullLiteral literal) {

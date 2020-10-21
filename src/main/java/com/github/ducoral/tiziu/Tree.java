@@ -43,10 +43,21 @@ abstract class Tree {
     }
 
     static class Function extends Tree {
-        final String name;
-        final List<Tree> params;
 
-        Function(String name, List<Tree> params) {
+        static class Param {
+            final String name;
+            final Tree value;
+
+            Param(String name, Tree value) {
+                this.name = name;
+                this.value = value;
+            }
+        }
+
+        final String name;
+        final List<Param> params;
+
+        Function(String name, List<Param> params) {
             this.name = name;
             this.params = params;
         }

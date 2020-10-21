@@ -98,7 +98,7 @@ class Scanner {
     }
 
     private void parseNullBooleanOrIdentifier() {
-        acceptWhile(ch -> ch == '_' || isLetter(ch) || isDigit(ch));
+        acceptWhile(ch -> ch == '_' || ch == '.' || isLetter(ch) || isDigit(ch));
         if (lexeme.equals("null"))
             token = Token.NULL;
         else if (lexeme.equals("true") || lexeme.equals("false"))

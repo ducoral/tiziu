@@ -1,9 +1,9 @@
 package com.github.ducoral.tiziu;
 
-import java.util.List;
+import java.util.Map;
 
 @FunctionalInterface
 public interface Function {
 
-    Object call(List<Object> params);
+    Object call(Map<String, Object> params);
 }
