@@ -1,5 +1,7 @@
 package com.github.ducoral.tiziu;
 
+import static com.github.ducoral.jutils.Core.map;
+
 public class Test {
 
     public static void main(String[] args) {
@@ -10,12 +12,11 @@ public class Test {
             return Math.max(x, y);
         };
 
-        Object value = Tiziu.builder()
-                .identifier("a.b", 6)
-                .identifier("b", 4)
-                .function("max", max)
-                .build()
-                .evaluate("(7 > max(x:a.b, y:b)) + (' a:' + a.b + ', b:' + b)");
+        Object value = new Tiziu()
+                .configure(map().pair("max", max).done())
+                .evaluate(
+                        "(7 > max(x:a.b, y:b)) + (' a:' + a.b + ', b:' + b)",
+                        map().pair("a.b", 10).pair("b", 20).done());
 
         System.out.println(value);
     }

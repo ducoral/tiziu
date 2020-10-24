@@ -7,67 +7,33 @@ import static com.github.ducoral.tiziu.Evaluator.Provider;
 
 public final class Tiziu {
 
-    private final Provider provider;
+    private final Map<Object, Object> functions = new HashMap<>();
 
-    public interface Builder {
-        Builder identifier(String name, Object value);
-        Builder identifiers(Map<String, Object> map);
-        Builder function(String name, Function function);
-        Builder functions(Map<String, Function> map);
-        Tiziu build();
+    public Object evaluate(String expression, Map<Object, Object> scope) {
+        return new Parser(new Scanner(expression))
+                .parseExpression()
+                .evaluate(new Evaluator(getProvider(scope)));
     }
 
-    public static Builder builder() {
-
-        return new Builder() {
-
-            final Map<String, Object> identifiers = new HashMap<>();
-
-            final Map<String, Function> functions = new HashMap<>();
-
-            public Builder identifier(String name, Object value) {
-                identifiers.put(name, value);
-                return this;
+    private Provider getProvider(Map<Object, Object> scope) {
+        return new Provider() {
+            public Function function(String name) {
+                Object function = functions.get(name);
+                return function instanceof Function ? (Function) function : params -> null;
             }
-
-            public Builder identifiers(Map<String, Object> map) {
-                identifiers.putAll(map);
-                return this;
-            }
-
-            public Builder function(String name, Function function) {
-                functions.put(name, function);
-                return this;
-            }
-
-            public Builder functions(Map<String, Function> map) {
-                functions.putAll(map);
-                return this;
-            }
-
-            public Tiziu build() {
-                return new Tiziu(new Provider() {
-                    public Function function(String name) {
-                        return functions.getOrDefault(name, (list) -> null);
-                    }
-                    public Object value(String identifier) {
-                        return identifiers.get(identifier);
-                    }
-                });
+            public Object value(String identifier) {
+                return scope.get(identifier);
             }
         };
     }
 
-    public Object evaluate(String expression) {
-        Scanner scanner = new Scanner(expression);
-        Parser parser = new Parser(scanner);
-        Evaluator evaluator = new Evaluator(provider);
-        return parser
-                .parseExpression()
-                .evaluate(evaluator);
+    public Tiziu configure(Map<Object, Object> functions) {
+        this.functions.putAll(functions);
+        return this;
     }
 
-    private Tiziu(Provider provider) {
-        this.provider = provider;
+    public Map<Object, Object> functions() {
+        return functions;
     }
+
 }

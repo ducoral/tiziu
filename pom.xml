@@ -8,6 +8,14 @@
     <artifactId>tiziu</artifactId>
     <version>3.0-SNAPSHOT</version>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.github.ducoral</groupId>
+            <artifactId>jutils</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
