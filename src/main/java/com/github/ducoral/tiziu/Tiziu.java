@@ -7,15 +7,15 @@ import static com.github.ducoral.tiziu.Evaluator.Provider;
 
 public final class Tiziu {
 
-    private final Map<Object, Object> functions = new HashMap<>();
+    private final Map<String, Object> functions = new HashMap<>();
 
-    public Object evaluate(String expression, Map<Object, Object> scope) {
+    public Object evaluate(String expression, Map<String, Object> scope) {
         return new Parser(new Scanner(expression))
                 .parseExpression()
                 .evaluate(new Evaluator(getProvider(scope)));
     }
 
-    private Provider getProvider(Map<Object, Object> scope) {
+    private Provider getProvider(Map<String, Object> scope) {
         return new Provider() {
             public Function function(String name) {
                 Object function = functions.get(name);
@@ -27,12 +27,12 @@ public final class Tiziu {
         };
     }
 
-    public Tiziu configure(Map<Object, Object> functions) {
+    public Tiziu configure(Map<String, Object> functions) {
         this.functions.putAll(functions);
         return this;
     }
 
-    public Map<Object, Object> functions() {
+    public Map<String, Object> functions() {
         return functions;
     }
 
