@@ -7,19 +7,19 @@ import static com.github.ducoral.tiziu.Evaluator.Provider;
 
 public final class Tiziu {
 
-    private final Map<String, Object> functions = new HashMap<>();
+    private final Map<String, Function> functions = new HashMap<>();
 
-    public Object evaluate(String expression, Map<String, Object> scope) {
+    public Object evaluate(String expression, Map<String, Function> scope) {
         return new Parser(new Scanner(expression))
                 .parseExpression()
                 .evaluate(new Evaluator(getProvider(scope)));
     }
 
-    private Provider getProvider(Map<String, Object> scope) {
+    private Provider getProvider(Map<String, Function> scope) {
         return new Provider() {
             public Function function(String name) {
-                Object function = functions.get(name);
-                return function instanceof Function ? (Function) function : params -> null;
+                Function function = functions.get(name);
+                return function == null ? params -> null : function;
             }
             public Object value(String identifier) {
                 return scope.get(identifier);
@@ -27,12 +27,12 @@ public final class Tiziu {
         };
     }
 
-    public Tiziu configure(Map<String, Object> functions) {
+    public Tiziu configure(Map<String, Function> functions) {
         this.functions.putAll(functions);
         return this;
     }
 
-    public Map<String, Object> functions() {
+    public Map<String, Function> functions() {
         return functions;
     }
 
