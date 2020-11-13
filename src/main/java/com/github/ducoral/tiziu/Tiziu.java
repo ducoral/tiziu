@@ -1,5 +1,7 @@
 package com.github.ducoral.tiziu;
 
+import com.github.ducoral.jutils.Scanner;
+
 import java.util.HashMap;
 import java.util.Map;
 

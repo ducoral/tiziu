@@ -1,9 +1,12 @@
 package com.github.ducoral.tiziu;
 
+import com.github.ducoral.jutils.Scanner;
+import com.github.ducoral.jutils.Token;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.ducoral.tiziu.Token.*;
+import static com.github.ducoral.jutils.Token.*;
 
 class Parser {
 
